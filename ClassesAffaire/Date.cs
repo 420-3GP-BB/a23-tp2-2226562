@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassesAffaire
 {
-    internal class Date
+    public class Date
     {
         public int Annee { get; set; }
         public int Mois { get; set; }

@@ -7,7 +7,52 @@
         mc:Ignorable="d"
         Title="BdeB GTD" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen">
-    <Grid>
+    
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:MainWindow.AProposCmd}"
+                        CanExecute="AProposCmd_CanExecute"
+                        Executed="AProposCmd_Executed">
+        </CommandBinding>
 
-    </Grid>
+        <CommandBinding Command="{x:Static local:MainWindow.QuitterCmd}"
+                        CanExecute="QuitterCmd_CanExecute"
+                        Executed="QuitterCmd_Executed">
+        </CommandBinding>
+
+        <CommandBinding Command="{x:Static local:MainWindow.AjouterEntreeCmd}"
+                        CanExecute="AjouterEntreeCmd_CanExecute"
+                        Executed="AjouterEntreeCmd_Executed">
+        </CommandBinding>
+
+        <CommandBinding Command="{x:Static local:MainWindow.TraiterCmd}"
+                        CanExecute="TraiterCmd_CanExecute"
+                        Executed="TraiterCmd_Executed">
+        </CommandBinding>
+
+
+    </Window.CommandBindings>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Fichier">
+                <MenuItem Header="Quitter" InputGestureText="Ctrl+Q" Command="{x:Static local:MainWindow.QuitterCmd}"/>
+            </MenuItem>
+
+            <MenuItem Header="_Boîtes d'entrées">
+                <MenuItem Header="Ajouter entrée(s)" InputGestureText="Ctrl+A" Command="{x:Static local:MainWindow.AjouterEntreeCmd}"/>
+                <MenuItem Header="Traiter" InputGestureText="Ctrl+T" Command="{x:Static local:MainWindow.TraiterCmd}"/>
+            </MenuItem>
+
+            <MenuItem Header="_Aide">
+                <MenuItem Header="À propos" Command="{x:Static local:MainWindow.AProposCmd}"/>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+            <TextBlock Text="Hello"/>
+            <TextBlock Text="Hello"/>
+            <TextBlock Text="Hello"/>
+            <TextBlock Text="Hello"/>
+        </StackPanel>
+    </DockPanel>
 </Window>
