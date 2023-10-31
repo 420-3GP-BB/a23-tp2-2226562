@@ -43,6 +43,8 @@ namespace GTD
             DateRappel = element.GetAttribute("dateRappel");
         }
 
+        public ElementGTD() { }
+
         public XmlElement VersXML(XmlDocument doc)
         {
             XmlElement element = doc.CreateElement("element_gtd");
@@ -55,7 +57,12 @@ namespace GTD
 
         }
 
-        
+        public override string ToString()
+        {
+            return Nom;
+        }
+
+
 
     }
 

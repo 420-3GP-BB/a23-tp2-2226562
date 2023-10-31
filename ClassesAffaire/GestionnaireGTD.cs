@@ -15,6 +15,11 @@ namespace GTD
             ListeSuivis = new ObservableCollection<ElementGTD>();
         }
 
+        public void Ajouter(ElementGTD element)
+        {
+            ListeEntrees.Add(element);
+        }
+
       
     }
 }

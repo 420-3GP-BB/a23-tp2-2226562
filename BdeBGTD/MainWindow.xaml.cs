@@ -45,6 +45,7 @@ namespace BdeBGTD
         private GestionnaireGTD _gestionnaire;
         private string _pathFichier;
         private char DIR_SEPARATOR = Path.DirectorySeparatorChar;
+        private int nbEntrees;
 
         public MainWindow()
         {
@@ -55,6 +56,8 @@ namespace BdeBGTD
             AjouterEntreeCmd.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
 
             TraiterCmd.InputGestures.Add(new KeyGesture(Key.T, ModifierKeys.Control));
+
+            nbEntrees = 0;
 
             DateCourante.Text = date_courante.ToString();
 
@@ -68,6 +71,8 @@ namespace BdeBGTD
 
 
             BoiteEntrees.ItemsSource = _gestionnaire.ListeEntrees;
+            ProchainesActions.ItemsSource = _gestionnaire.ListeActions;
+            SystemeSuivi.ItemsSource = _gestionnaire.ListeSuivis;
 
         }
 
@@ -108,7 +113,7 @@ namespace BdeBGTD
 
         private void QuitterCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //SauvegarderXml();
+            SauvegarderXml();
             Close();
         }
 
@@ -119,8 +124,18 @@ namespace BdeBGTD
 
         private void AjouterEntreeCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("Entrée ajoutée avec succès ");
-            //nbEntrées++;
+            ElementGTD uneEntree = new ElementGTD();
+            //AjoutEntree fenetreEntree = new AjoutEntree(uneEntree
+            AjoutEntree fenetreEntree = new AjoutEntree(uneEntree, _gestionnaire.ListeEntrees);
+            fenetreEntree.Owner = this;
+            fenetreEntree.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            bool? resultat = fenetreEntree.ShowDialog();
+            if (resultat.HasValue && resultat.Value)
+            {
+                _gestionnaire.Ajouter(uneEntree);
+            }
+
+            nbEntrees++;
         }
 
         private void TraiterCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)

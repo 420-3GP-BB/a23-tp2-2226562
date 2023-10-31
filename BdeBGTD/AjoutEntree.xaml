@@ -12,6 +12,12 @@
 
     </Window.Resources>
 
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:AjoutEntree.AjouterEntree}"
+                        CanExecute="AjouterEntree_CanExecute"
+                        Executed="AjouterEntree_Executed"/>
+    </Window.CommandBindings>
+
 
     <Grid Background="AliceBlue">
         <Grid.RowDefinitions>
@@ -42,8 +48,9 @@
                        FontSize="10"/>
 
             <TextBox Grid.Column="1"
+                     x:Name="TextBoxNomElement"
                      Margin="2,0,3,0"
-                     Name="TextBoxNomElement"/>
+                     />
         </Grid>
 
         <TextBox Grid.Row="2" Margin="5,5,5,0"
@@ -55,7 +62,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Confirmer" Content="Confirmer" Grid.Column="0" Margin="15,7,15,7" FontSize="10"/>
+            <Button x:Name="Confirmer" Content="Confirmer" Grid.Column="0" Margin="15,7,15,7" FontSize="10" Command="{x:Static local:AjoutEntree.AjouterEntree}"/>
             <Button x:Name="Annuler" Content="Annuler" Grid.Column="1" Margin="15,7,15,7" FontSize="10"/>
         </Grid>
 
@@ -72,7 +79,7 @@
 
 
             <CheckBox IsChecked="False"
-                      Name="CheckboxFenetreOuverte" 
+                      x:Name="CheckboxFenetreOuverte" 
                       Width="15"
                       Margin="2" 
                       Grid.Column="0"/>
