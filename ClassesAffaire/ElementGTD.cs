@@ -1,4 +1,5 @@
 ﻿using ClassesAffaire;
+using System.Xml;
 
 namespace GTD
 {
@@ -6,10 +7,12 @@ namespace GTD
     {
         public string Nom { get; set; }
         public string Description { get; set; }
-        public Date DateRappel { get; set; }
-        public Statut Statut { get; set; }
+        public string DateRappel { get; set; }
+        public string Statut { get; set; }
 
-        public ElementGTD(string nom, Statut statut, string description, Date dateRappel) 
+        /*
+
+        public ElementGTD(string nom, string statut, string description, string dateRappel) 
         { 
             Nom = nom;
             Statut = statut;
@@ -18,34 +21,44 @@ namespace GTD
             
         }
 
-        public ElementGTD(string nom, Statut statut)
+        public ElementGTD(string nom, string statut)
         {
             Nom = nom;
             Statut = statut;
         }
 
-        public ElementGTD(string nom, Statut statut, string description)
+        public ElementGTD(string nom, string statut, string description)
         {
             Nom = nom;
             Statut = statut;
             Description = description;
         }
 
-        public ElementGTD(string nom, Statut statut, Date dateRappel)
+        */
+        public ElementGTD(XmlElement element)
         {
-            Nom = nom;
-            Statut = statut;
-            DateRappel = dateRappel;
+            Nom = element.GetAttribute("nom");
+            Description = element.InnerText;
+            Statut = element.GetAttribute("statut");
+            DateRappel = element.GetAttribute("dateRappel");
         }
 
+        public XmlElement VersXML(XmlDocument doc)
+        {
+            XmlElement element = doc.CreateElement("element_gtd");
+            element.SetAttribute("nom", Nom);
+            element.SetAttribute("statut", Statut);
+            element.SetAttribute("dateRappel", DateRappel);
+            element.InnerText = Description;
+
+            return element;
+
+        }
+
+        
+
     }
 
 
-    public enum Statut
-    {
-        Entree,
-        Action,
-        Suivi,
-        Archive
-    }
+
 }

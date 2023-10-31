@@ -6,8 +6,10 @@
         xmlns:local="clr-namespace:BdeBGTD"
         mc:Ignorable="d"
         Title="BdeB GTD" Height="720" Width="1280"
-        WindowStartupLocation="CenterScreen">
-    
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+
+
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.AProposCmd}"
                         CanExecute="AProposCmd_CanExecute"
@@ -29,11 +31,44 @@
                         Executed="TraiterCmd_Executed">
         </CommandBinding>
 
+        <CommandBinding Command="{x:Static local:MainWindow.AllerProchainJour}"
+                        CanExecute="AllerProchainJour_CanExecute"
+                        Executed="AllerProchainJour_Executed"/>
+
 
     </Window.CommandBindings>
 
+    <Window.Resources>
+        <Style x:Key="styleMenu">
+            <Setter Property="ItemsControl.Background" Value="LightGray"/>
+            <Setter Property="ItemsControl.FontFamily" Value="Candara"/>
+
+
+        </Style>
+
+        <Style x:Key="styleTitre">
+            <Setter Property="ItemsControl.FontSize"  Value="24"/>
+            <Setter Property="ItemsControl.FontStyle" Value="Italic"/>
+            <Setter Property="ItemsControl.FontWeight" Value="Bold"/>
+            <Setter Property="ItemsControl.Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="StyleTitreBoites">
+            <Setter Property="ItemsControl.FontSize" Value="24"/>
+            <Setter Property="ItemsControl.FontFamily" Value="Candara"/>
+            <Setter Property="ItemsControl.FontWeight" Value="Bold"/>
+            <Setter Property="ItemsControl.HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="StyleListBox">
+            <Setter Property="ItemsControl.Margin" Value="15,0,15,15"/>
+            <Setter Property="ItemsControl.BorderBrush" Value="Black"/>
+            <Setter Property="ItemsControl.BorderThickness" Value="4"/>
+        </Style>
+    </Window.Resources>
+
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" Style="{StaticResource styleMenu}">
             <MenuItem Header="_Fichier">
                 <MenuItem Header="Quitter" InputGestureText="Ctrl+Q" Command="{x:Static local:MainWindow.QuitterCmd}"/>
             </MenuItem>
@@ -48,11 +83,57 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-            <TextBlock Text="Hello"/>
-            <TextBlock Text="Hello"/>
-            <TextBlock Text="Hello"/>
-            <TextBlock Text="Hello"/>
-        </StackPanel>
+        <DockPanel DockPanel.Dock="Bottom" Background="AliceBlue">
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="640"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Getting Things Done ©" Style="{StaticResource styleTitre}"/>
+                <Canvas Grid.Column="1">
+                    <TextBlock Canvas.Right="50" 
+                               x:Name="DateCourante"
+                               Text="" 
+                               FontSize="15" 
+                               Canvas.Top="10"
+                               FontWeight="DemiBold"/>
+                    <Button Canvas.Right="20"
+                            Canvas.Top="10" 
+                            Name="plus" 
+                            BorderThickness="1"
+                            Content="+" 
+                            Height="22"
+                            Width="22"
+                            Command="{x:Static local:MainWindow.AllerProchainJour}"/>
+                </Canvas>
+
+            </Grid>
+
+            <Grid DockPanel.Dock="Bottom">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Boîte d'entrées" Grid.Column="0" Grid.Row="0" Style="{StaticResource StyleTitreBoites}"/>
+                    <TextBlock Text="Prochaines actions" Grid.Column="1" Grid.Row="0" Style="{StaticResource StyleTitreBoites}"/>
+                    <TextBlock Text="Système de suivi" Grid.Column="2" Grid.Row="0" Style="{StaticResource StyleTitreBoites}"/>
+
+                    <ListBox x:Name="BoiteEntrees" Grid.Row="1" Grid.Column="0" Style="{StaticResource StyleListBox}"></ListBox>
+                    <ListBox x:Name="ProchainesActions" Grid.Row="1" Grid.Column="1" Style="{StaticResource StyleListBox}" ></ListBox>
+                    <ListBox x:Name="SystemeSuivi" Grid.Row="1" Grid.Column="2" Style="{StaticResource StyleListBox}" ></ListBox>
+                </Grid>
+
+            </Grid>
+
+        </DockPanel>
     </DockPanel>
 </Window>

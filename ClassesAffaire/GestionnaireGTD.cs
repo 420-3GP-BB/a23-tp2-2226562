@@ -14,5 +14,7 @@ namespace GTD
             ListeActions = new ObservableCollection<ElementGTD>();
             ListeSuivis = new ObservableCollection<ElementGTD>();
         }
+
+      
     }
 }
