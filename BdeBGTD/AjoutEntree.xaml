@@ -16,6 +16,10 @@
         <CommandBinding Command="{x:Static local:AjoutEntree.AjouterEntree}"
                         CanExecute="AjouterEntree_CanExecute"
                         Executed="AjouterEntree_Executed"/>
+
+        <CommandBinding Command="{x:Static local:AjoutEntree.AnnulerEntree}"
+                        CanExecute="AnnulerEntree_CanExecute"
+                        Executed="AnnulerEntree_Executed"/>
     </Window.CommandBindings>
 
 
@@ -50,11 +54,12 @@
             <TextBox Grid.Column="1"
                      x:Name="TextBoxNomElement"
                      Margin="2,0,3,0"
-                     />
+                     Text="{Binding Nom, Mode=TwoWay}"/>
         </Grid>
 
         <TextBox Grid.Row="2" Margin="5,5,5,0"
-              x:Name="DescriptionElement"/>
+                 x:Name="DescriptionElement"
+                 Text="{Binding Description, Mode=TwoWay}"/>
 
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
@@ -63,7 +68,7 @@
             </Grid.ColumnDefinitions>
 
             <Button x:Name="Confirmer" Content="Confirmer" Grid.Column="0" Margin="15,7,15,7" FontSize="10" Command="{x:Static local:AjoutEntree.AjouterEntree}"/>
-            <Button x:Name="Annuler" Content="Annuler" Grid.Column="1" Margin="15,7,15,7" FontSize="10"/>
+            <Button x:Name="Annuler" Content="Annuler" Grid.Column="1" Margin="15,7,15,7" FontSize="10" Command="{x:Static local:AjoutEntree.AnnulerEntree}"/>
         </Grid>
 
 

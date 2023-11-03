@@ -43,7 +43,13 @@ namespace GTD
             DateRappel = element.GetAttribute("dateRappel");
         }
 
-        public ElementGTD() { }
+        public ElementGTD() 
+        {
+            Statut = "Entree";
+        }
+
+        
+
 
         public XmlElement VersXML(XmlDocument doc)
         {

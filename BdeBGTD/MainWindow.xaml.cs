@@ -46,6 +46,8 @@ namespace BdeBGTD
         private string _pathFichier;
         private char DIR_SEPARATOR = Path.DirectorySeparatorChar;
         private int nbEntrees;
+        private List<ElementGTD> _lesProchainesActions;
+        private List<ElementGTD> _poubelle = new List<ElementGTD>();
 
         public MainWindow()
         {
@@ -66,9 +68,9 @@ namespace BdeBGTD
             _pathFichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + DIR_SEPARATOR +
                           "Fichiers-3GP" + DIR_SEPARATOR + "bdeb_gtd.xml";
 
+            _lesProchainesActions = new List<ElementGTD>();
+
             ChargerFichierXml();
-
-
 
             BoiteEntrees.ItemsSource = _gestionnaire.ListeEntrees;
             ProchainesActions.ItemsSource = _gestionnaire.ListeActions;
@@ -89,10 +91,6 @@ namespace BdeBGTD
             }
 
         }
-
-
-
-
 
         private void AProposCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -124,31 +122,35 @@ namespace BdeBGTD
 
         private void AjouterEntreeCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            ElementGTD uneEntree = new ElementGTD();
-            //AjoutEntree fenetreEntree = new AjoutEntree(uneEntree
-            AjoutEntree fenetreEntree = new AjoutEntree(uneEntree, _gestionnaire.ListeEntrees);
+            AjoutEntree fenetreEntree = new AjoutEntree(_gestionnaire.ListeEntrees);
             fenetreEntree.Owner = this;
             fenetreEntree.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            bool? resultat = fenetreEntree.ShowDialog();
-            if (resultat.HasValue && resultat.Value)
-            {
-                _gestionnaire.Ajouter(uneEntree);
-            }
+            fenetreEntree.ShowDialog();
+            
 
-            nbEntrees++;
         }
 
         private void TraiterCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            //if(nbEntrées > 0)
-            //{
-            //  e.CanExecute = true;
-            //}
+            if(_gestionnaire.ListeEntrees.Count > 0)
+            {
+              e.CanExecute = true;
+            }
         }
 
         private void TraiterCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("TraitementTest");
+            foreach(ElementGTD element in _gestionnaire.ListeEntrees)
+            {
+                Traiter fenetreTraiter = new Traiter(_gestionnaire.ListeEntrees, element, _poubelle);
+                fenetreTraiter.Owner = this;
+                fenetreTraiter.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                fenetreTraiter.ShowDialog();
+            }
+
+            Traiter.ViderPoubelle(_gestionnaire.ListeEntrees, _poubelle);
+
+             
         }
 
         private void AllerProchainJour_CanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -8,9 +8,12 @@
         Title="Traiter" Height="260" Width="350"
         ResizeMode="NoResize">
 
-    <Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:Traiter.PoubelleCmd}"
+                       CanExecute="PoubelleCmd_CanExecute"
+                       Executed="PoubelleCmd_Executed"/>
 
-    </Window.Resources>
+    </Window.CommandBindings>
 
 
     <Grid Background="AliceBlue">
@@ -37,7 +40,8 @@
             <TextBox Grid.Column="0"
                      Margin="2,2,3,2"
                      Name="NomElementTrie"
-                     BorderBrush="Gray"/>
+                     BorderBrush="Gray"
+                     Text="{Binding Nom, Mode=TwoWay}"/>
 
             <Button Grid.Column="1"
                     Content="Retour"   
@@ -50,7 +54,8 @@
         </Grid>
 
         <TextBox Grid.Row="2" Margin="5,20,5,0"
-              x:Name="DescriptionElementTrie" BorderBrush="Gray"/>
+                x:Name="DescriptionElementTrie" BorderBrush="Gray"
+                 Text="{Binding Description, Mode=TwoWay}"/>
 
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
@@ -60,10 +65,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Incuber" Content="Incuber" Grid.Column="0" Margin="15,10,5,7" FontSize="10" VerticalAlignment="Center"/>
-            <Button x:Name="ActionRapide" Content="Action rapide" Grid.Column="1" Margin="15,10,10,7" FontSize="10" VerticalAlignment="Center"/>
-            <Button x:Name="PlanifierAction" Content="Planifier action" Grid.Column="2" Margin="5,10,1,7" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button x:Name="Poubelle" Content="Poubelle" Grid.Column="3" Margin="15,10,15,7" FontSize="10"/>
+            <Button x:Name="Incuber" Content="Incuber" Grid.Column="0" Margin="15,10,5,7" FontSize="10" VerticalAlignment="Center" />
+            <Button x:Name="ActionRapide" Content="Action rapide" Grid.Column="1" Margin="15,10,10,7" FontSize="10" VerticalAlignment="Center" />
+            <Button x:Name="PlanifierAction" Content="Planifier action" Grid.Column="2" Margin="5,10,1,7" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Button x:Name="Poubelle" Content="Poubelle" Grid.Column="3" Margin="15,10,15,7" FontSize="10" Command="{x:Static local:Traiter.PoubelleCmd}"/>
         </Grid>
 
     </Grid>

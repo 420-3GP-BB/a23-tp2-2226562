@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using ClassesAffaire;
+using System.Xml.Linq;
 
 namespace BdeBGTD
 {
@@ -27,28 +28,27 @@ namespace BdeBGTD
 
         public static RoutedCommand AjouterEntree = new RoutedCommand();
 
+        public static RoutedCommand AnnulerEntree = new RoutedCommand();
+
         private List<TextBox> _lesTextBox;
 
-        ObservableCollection<ElementGTD> _liste;
+        ObservableCollection<ElementGTD> _laListe;
 
-        public AjoutEntree(ElementGTD elemVide, ObservableCollection<ElementGTD> liste)
+        ElementGTD _element;
+
+        public AjoutEntree(ObservableCollection<ElementGTD> liste)
         {
             _lesTextBox = new List<TextBox>();
-            
-            InitializeComponent();
+            _element = new ElementGTD();
 
-            DataContext = elemVide;
+            InitializeComponent();
 
             _lesTextBox.Add(TextBoxNomElement);
             _lesTextBox.Add(DescriptionElement);
 
-            //elemVide.Nom = TextBoxNomElement.Text;
-            //elemVide.Statut = "Entree";
-            //elemVide.Description = TextBoxNomElement.Text;
-
-            //liste.Add(elemVide);
-
-            liste = _liste;
+            
+            DataContext = _element;
+            _laListe = liste;
         }
 
         private void AjouterEntree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -58,7 +58,12 @@ namespace BdeBGTD
 
         private void AjouterEntree_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            
+ 
+            _laListe.Add(_element);
+
+            _element = new ElementGTD();
+            DataContext = _element;
+
             if ( ! CheckboxFenetreOuverte.IsChecked.Value)
             {
                 DialogResult = true;
@@ -78,6 +83,16 @@ namespace BdeBGTD
                 }
             }
             return reponse;
+        }
+
+        private void AnnulerEntree_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void AnnulerEntree_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
