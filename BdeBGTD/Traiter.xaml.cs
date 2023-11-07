@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +13,10 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Shapes;
+using ClassesAffaire;
+using System.Xml.Linq;
 
 namespace BdeBGTD
 {
@@ -25,27 +29,34 @@ namespace BdeBGTD
         public static RoutedCommand IncuberCmd = new RoutedCommand();
         public static RoutedCommand PlanifierActionCmd = new RoutedCommand();
         public static RoutedCommand ActionRapideCmd = new RoutedCommand();
+        public static RoutedCommand Retour = new RoutedCommand();
         ObservableCollection<ElementGTD> maListe;
-        List<ElementGTD> laPoubelle = new List<ElementGTD>();
+        ObservableCollection<ElementGTD> mesActions;
+        ObservableCollection<ElementGTD> mesSuivis;
+        List<ElementGTD> mesProchainesActions;
         ElementGTD unElement;
+        int elementCourant = 0;
+        GestionnaireGTD unGestionnaire;
+        //List<ElementGTD> laPoubelle = new List<ElementGTD>();
+        //ElementGTD unElement;
         //private List<TextBox> _lesTextBox;
 
 
-        public Traiter(ObservableCollection<ElementGTD> _liste, ElementGTD _element, List<ElementGTD> _poubelle)
+        public Traiter(GestionnaireGTD _gestionnaire)
         {
-            //_lesTextBox = new List<TextBox>();
             unElement = new ElementGTD();
-            maListe = new ObservableCollection<ElementGTD>();
-            laPoubelle = new List<ElementGTD>();
             
             InitializeComponent();
-            //_lesTextBox.Add();
-            //_lesTextBox.Add();
-            
-            DataContext = _element;
-            unElement = _element;
-            maListe = _liste;
-            laPoubelle = _poubelle;
+
+            unGestionnaire = _gestionnaire;
+            maListe = unGestionnaire.ListeEntrees;
+            mesActions = unGestionnaire.ListeActions;
+            mesSuivis = unGestionnaire.ListeSuivis;
+            mesProchainesActions = unGestionnaire.ProchainesActions;
+
+            DataContext = unGestionnaire.ListeEntrees[elementCourant];
+
+          
 
             
         }
@@ -57,7 +68,21 @@ namespace BdeBGTD
 
         private void IncuberCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            CalendrierSuivi suivi = new CalendrierSuivi();
+            suivi.Owner = this;
+            suivi.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            suivi.ShowDialog();
+
             Close();
+
+            if (elementCourant < maListe.Count)
+            {
+                DataContext = maListe[elementCourant];
+            }
+            else
+            {
+                Close();
+            }
         }
 
         private void ActionRapideCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -68,8 +93,22 @@ namespace BdeBGTD
 
         private void ActionRapide_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            
-            Close();
+            unElement = maListe[elementCourant];
+
+            mesActions.Add(unElement);
+            unElement.Statut = "Action";
+            unElement.DateRappel = DateOnly.FromDateTime(DateTime.Now);
+
+            maListe.Remove(unElement);
+
+            if (elementCourant < maListe.Count)
+            {
+                DataContext = maListe[elementCourant];
+            }
+            else
+            {
+                Close();
+            }
         }
 
         private void PlanifierActionCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -79,11 +118,26 @@ namespace BdeBGTD
 
         private void PlanifierActionCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            CalendrierPlanif planification = new CalendrierPlanif();
+            unElement = maListe[elementCourant];
+
+            CalendrierPlanif planification = new CalendrierPlanif(unElement);
             planification.Owner = this;
             planification.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             planification.ShowDialog();
-            Close();
+
+            mesProchainesActions.Add(unElement);
+
+            maListe.Remove(unElement);
+
+
+            if (elementCourant < maListe.Count)
+            {
+                DataContext = maListe[elementCourant];
+            }
+            else
+            {
+                Close();
+            }
         }
 
         private void PoubelleCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -93,20 +147,31 @@ namespace BdeBGTD
 
         private void PoubelleCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            laPoubelle.Add(unElement);
-            MessageBox.Show($"'{unElement.Nom}' a été enlevé de la liste avec succès");
-            Close();
+
+            maListe.Remove(maListe[elementCourant]);
+            if(elementCourant < maListe.Count)
+            {
+                DataContext = maListe[elementCourant];
+            }
+            else
+            {
+                Close();
+            }
+            
             
         }
 
         
 
-        public static void ViderPoubelle(ObservableCollection<ElementGTD> maListe, List<ElementGTD> laPoubelle)
+
+        private void Retour_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            foreach(ElementGTD item in laPoubelle)
-            {
-                maListe.Remove(item);
-            }
+            e.CanExecute = true;
+        }
+
+        private void Retour_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close() ;
         }
     }
 }

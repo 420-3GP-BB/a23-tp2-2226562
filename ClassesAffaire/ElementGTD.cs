@@ -7,7 +7,7 @@ namespace GTD
     {
         public string Nom { get; set; }
         public string Description { get; set; }
-        public string DateRappel { get; set; }
+        public DateOnly? DateRappel { get; set; }
         public string Statut { get; set; }
 
         /*
@@ -40,7 +40,20 @@ namespace GTD
             Nom = element.GetAttribute("nom");
             Description = element.InnerText;
             Statut = element.GetAttribute("statut");
-            DateRappel = element.GetAttribute("dateRappel");
+
+            if(element.GetAttribute("dateRappel") != "")
+            {
+                string[] laDate = element.GetAttribute("dateRappel").Split("-");
+                int.TryParse(laDate[0], out int annee);
+                int.TryParse(laDate[1], out int mois);
+                int.TryParse(laDate[2], out int jour);
+                DateRappel = new DateOnly(annee, mois, jour);
+            }
+            else
+            {
+                DateRappel = null;
+            }
+            
         }
 
         public ElementGTD() 
@@ -56,7 +69,7 @@ namespace GTD
             XmlElement element = doc.CreateElement("element_gtd");
             element.SetAttribute("nom", Nom);
             element.SetAttribute("statut", Statut);
-            element.SetAttribute("dateRappel", DateRappel);
+            element.SetAttribute("dateRappel", DateRappel.ToString());
             element.InnerText = Description;
 
             return element;
@@ -65,7 +78,15 @@ namespace GTD
 
         public override string ToString()
         {
-            return Nom;
+            if(Statut == "Suivi")
+            {
+                return $"{Nom} ({DateRappel.ToString})";
+            }
+            else
+            {
+                return Nom;
+            }
+            
         }
 
 

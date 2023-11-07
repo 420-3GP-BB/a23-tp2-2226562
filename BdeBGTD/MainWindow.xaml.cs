@@ -46,8 +46,8 @@ namespace BdeBGTD
         private string _pathFichier;
         private char DIR_SEPARATOR = Path.DirectorySeparatorChar;
         private int nbEntrees;
-        private List<ElementGTD> _lesProchainesActions;
-        private List<ElementGTD> _poubelle = new List<ElementGTD>();
+        //private List<ElementGTD> _lesProchainesActions;
+        //private List<ElementGTD> _poubelle = new List<ElementGTD>();
 
         public MainWindow()
         {
@@ -68,7 +68,7 @@ namespace BdeBGTD
             _pathFichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + DIR_SEPARATOR +
                           "Fichiers-3GP" + DIR_SEPARATOR + "bdeb_gtd.xml";
 
-            _lesProchainesActions = new List<ElementGTD>();
+            //_lesProchainesActions = new List<ElementGTD>();
 
             ChargerFichierXml();
 
@@ -87,7 +87,31 @@ namespace BdeBGTD
 
             foreach (XmlElement unElement in lesElementsXML)
             {
-                _gestionnaire.ListeEntrees.Add(new ElementGTD(unElement));
+                ElementGTD elem = new ElementGTD(unElement);
+                
+                switch (elem.Statut)
+                {
+                    case "Entree":
+                        _gestionnaire.ListeEntrees.Add(elem);
+                        break;
+                    case "Action":
+                        if(elem.DateRappel > date_courante)
+                        {
+                            _gestionnaire.ListeActions.Add(elem);
+                        }
+                        else
+                        {
+                            _gestionnaire.ProchainesActions.Add(elem);
+                        }
+                        
+                        break;
+                    case "Suivi":
+                        _gestionnaire.ListeSuivis.Add(elem);
+                        break;
+                    default:
+                        break;
+
+                }
             }
 
         }
@@ -140,15 +164,14 @@ namespace BdeBGTD
 
         private void TraiterCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            foreach(ElementGTD element in _gestionnaire.ListeEntrees)
-            {
-                Traiter fenetreTraiter = new Traiter(_gestionnaire.ListeEntrees, element, _poubelle);
+            
+                Traiter fenetreTraiter = new Traiter(_gestionnaire);
                 fenetreTraiter.Owner = this;
                 fenetreTraiter.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 fenetreTraiter.ShowDialog();
-            }
+            
 
-            Traiter.ViderPoubelle(_gestionnaire.ListeEntrees, _poubelle);
+            //Traiter.ViderPoubelle(_gestionnaire.ListeEntrees, _poubelle);
 
              
         }
@@ -169,22 +192,6 @@ namespace BdeBGTD
 
         private void SauvegarderXml()
         {
-            /*
-             * XmlDocument doc = new XmlDocument();
-            XmlElement racine = doc.CreateElement("gtd");
-            doc.AppendChild(racine);
-
-            XmlElement element = doc.CreateElement("element_gtd");
-            racine.AppendChild(element);
-
-            foreach (ElementGTD unElem in _gestionnaire.ListeEntrees)
-            {
-                XmlElement nouveau = unElem.VersXML(doc);
-                element.AppendChild(nouveau);
-            }
-            doc.Save(_pathFichier);
-             */
-
             XmlDocument doc = new XmlDocument();
             XmlElement racine = doc.CreateElement("element_gtd");
             doc.AppendChild(racine);
@@ -201,6 +208,11 @@ namespace BdeBGTD
             foreach (ElementGTD suivi in _gestionnaire.ListeSuivis)
             {
                 racine.AppendChild(suivi.VersXML(doc));
+            }
+
+            foreach(ElementGTD prochains in _gestionnaire.ProchainesActions)
+            {
+                racine.AppendChild(prochains.VersXML(doc));
             }
 
             doc.Save(_pathFichier);

@@ -10,8 +10,24 @@
 
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:Traiter.PoubelleCmd}"
-                       CanExecute="PoubelleCmd_CanExecute"
-                       Executed="PoubelleCmd_Executed"/>
+                        CanExecute="PoubelleCmd_CanExecute"
+                        Executed="PoubelleCmd_Executed"/>
+
+        <CommandBinding Command="{x:Static local:Traiter.PlanifierActionCmd}"
+                        CanExecute="PlanifierActionCmd_CanExecute"
+                        Executed="PlanifierActionCmd_Executed"/>
+
+        <CommandBinding Command="{x:Static local:Traiter.ActionRapideCmd}"
+                        CanExecute="ActionRapideCmd_CanExecute"
+                        Executed="ActionRapide_Executed"/>
+
+        <CommandBinding Command="{x:Static local:Traiter.Retour}"
+                        CanExecute="Retour_CanExecute"
+                        Executed="Retour_Executed"/>
+
+        <CommandBinding Command="{x:Static local:Traiter.IncuberCmd}"
+                        CanExecute="IncuberCmd_CanExecute"
+                        Executed="IncuberCmd_Executed"/>
 
     </Window.CommandBindings>
 
@@ -48,7 +64,7 @@
                     VerticalAlignment="Center"
                     FontSize="10"
                     Margin="10,0,0,0"
-                    />
+                    Command="{x:Static local:Traiter.Retour}"/>
 
 
         </Grid>
@@ -65,9 +81,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Incuber" Content="Incuber" Grid.Column="0" Margin="15,10,5,7" FontSize="10" VerticalAlignment="Center" />
-            <Button x:Name="ActionRapide" Content="Action rapide" Grid.Column="1" Margin="15,10,10,7" FontSize="10" VerticalAlignment="Center" />
-            <Button x:Name="PlanifierAction" Content="Planifier action" Grid.Column="2" Margin="5,10,1,7" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Button x:Name="Incuber" Content="Incuber" Grid.Column="0" Margin="15,10,5,7" FontSize="10" VerticalAlignment="Center" Command="{x:Static local:Traiter.IncuberCmd}"/>
+            <Button x:Name="ActionRapide" Content="Action rapide" Grid.Column="1" Margin="15,10,10,7" FontSize="10" VerticalAlignment="Center" Command="{x:Static local:Traiter.ActionRapideCmd}"/>
+            <Button x:Name="PlanifierAction" Content="Planifier action" Grid.Column="2" Margin="5,10,1,7" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{x:Static local:Traiter.PlanifierActionCmd}"/>
             <Button x:Name="Poubelle" Content="Poubelle" Grid.Column="3" Margin="15,10,15,7" FontSize="10" Command="{x:Static local:Traiter.PoubelleCmd}"/>
         </Grid>
 
