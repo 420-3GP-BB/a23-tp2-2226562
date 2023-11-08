@@ -27,7 +27,21 @@ namespace BdeBGTD
             element = elem;
         }
 
-        private void Calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        /*private void Calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Calendar calendrier = sender as Calendar;
+
+            if (calendrier.SelectedDate.HasValue)
+            {
+                DateTime date = calendrier.SelectedDate.Value;
+                element.DateRappel = DateOnly.Parse(date.ToShortDateString());
+                element.Statut = "Action";
+            }
+
+            Close();
+        }*/
+
+        private void Calendar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Calendar calendrier = sender as Calendar;
 

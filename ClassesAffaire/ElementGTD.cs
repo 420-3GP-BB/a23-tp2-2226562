@@ -80,7 +80,7 @@ namespace GTD
         {
             if(Statut == "Suivi")
             {
-                return $"{Nom} ({DateRappel.ToString})";
+                return $"{Nom} ({DateRappel.ToString()})";
             }
             else
             {

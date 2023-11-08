@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Date de suivi" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"></TextBlock>
-        <Calendar Grid.Row="1"></Calendar>
+        <Calendar Grid.Row="1" MouseDoubleClick="Calendar_MouseDoubleClick"></Calendar>
         <Button Name="Annuler" Content="Annuler" Grid.Row="2" Margin="10" Width="80" Height="20" VerticalAlignment="Top"></Button>
     </Grid>
 

@@ -46,8 +46,7 @@ namespace BdeBGTD
         private string _pathFichier;
         private char DIR_SEPARATOR = Path.DirectorySeparatorChar;
         private int nbEntrees;
-        //private List<ElementGTD> _lesProchainesActions;
-        //private List<ElementGTD> _poubelle = new List<ElementGTD>();
+        
 
         public MainWindow()
         {
@@ -101,7 +100,7 @@ namespace BdeBGTD
                         }
                         else
                         {
-                            _gestionnaire.ProchainesActions.Add(elem);
+                            _gestionnaire.AutresElements.Add(elem);
                         }
                         
                         break;
@@ -183,11 +182,47 @@ namespace BdeBGTD
 
         private void AllerProchainJour_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            List<ElementGTD> poubelleActions = new List<ElementGTD>();
+            List<ElementGTD> poubelleSuivis = new List<ElementGTD>();
+
+            //int proActions = _gestionnaire.AutresElements.Count;
+            //int suivi = _gestionnaire.ListeSuivis.Count;
             DateOnly nouvelleDate = date_courante.AddDays(1);
             DateCourante.Text = nouvelleDate.ToString();
             date_courante = nouvelleDate;
+            foreach (ElementGTD elem in _gestionnaire.ListeSuivis)
+            {
+                if (elem.DateRappel == date_courante)
+                {
+                    poubelleSuivis.Add(elem);
+                    _gestionnaire.ListeEntrees.Add(elem);
+                    elem.Statut = "Entree";
+                    elem.DateRappel = null;
+                }
 
-            
+            }
+
+            foreach(ElementGTD elem in poubelleSuivis)
+            {
+                _gestionnaire.ListeSuivis.Remove(elem);
+            }
+
+
+            foreach(ElementGTD elem in _gestionnaire.AutresElements)
+            {
+                if(elem.DateRappel == date_courante)
+                {
+                    poubelleActions.Add(elem);
+                    _gestionnaire.ListeActions.Add(elem);
+                }
+            }
+
+            foreach (ElementGTD elem in poubelleActions)
+            {
+                _gestionnaire.AutresElements.Remove(elem);
+            }
+
+
         }
 
         private void SauvegarderXml()
@@ -210,12 +245,29 @@ namespace BdeBGTD
                 racine.AppendChild(suivi.VersXML(doc));
             }
 
-            foreach(ElementGTD prochains in _gestionnaire.ProchainesActions)
+            foreach(ElementGTD prochains in _gestionnaire.AutresElements)
             {
                 racine.AppendChild(prochains.VersXML(doc));
             }
 
             doc.Save(_pathFichier);
+        }
+
+        private void ProchainesActions_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+            // Sélectionnez l'élément double-cliqué
+            //ElementGTD unElement = (ElementGTD)sender;
+
+            //string selectedText = ProchainesActions.SelectedItem.ToString();
+
+            ElementGTD unElement = (ElementGTD)ProchainesActions.SelectedItem;
+
+            lesActions fenetreAction = new lesActions(unElement, _gestionnaire);
+            fenetreAction.Owner = this;
+            fenetreAction.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            fenetreAction.ShowDialog();
+
         }
     }
 }

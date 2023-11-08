@@ -33,7 +33,7 @@ namespace BdeBGTD
         ObservableCollection<ElementGTD> maListe;
         ObservableCollection<ElementGTD> mesActions;
         ObservableCollection<ElementGTD> mesSuivis;
-        List<ElementGTD> mesProchainesActions;
+        List<ElementGTD> mesAutresElements;
         ElementGTD unElement;
         int elementCourant = 0;
         GestionnaireGTD unGestionnaire;
@@ -52,7 +52,7 @@ namespace BdeBGTD
             maListe = unGestionnaire.ListeEntrees;
             mesActions = unGestionnaire.ListeActions;
             mesSuivis = unGestionnaire.ListeSuivis;
-            mesProchainesActions = unGestionnaire.ProchainesActions;
+            mesAutresElements = unGestionnaire.AutresElements;
 
             DataContext = unGestionnaire.ListeEntrees[elementCourant];
 
@@ -68,12 +68,17 @@ namespace BdeBGTD
 
         private void IncuberCmd_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            CalendrierSuivi suivi = new CalendrierSuivi();
+            unElement = maListe[elementCourant];
+
+            CalendrierSuivi suivi = new CalendrierSuivi(unElement);
             suivi.Owner = this;
             suivi.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             suivi.ShowDialog();
 
-            Close();
+            mesSuivis.Add(unElement);
+
+            maListe.Remove(unElement);
+
 
             if (elementCourant < maListe.Count)
             {
@@ -83,6 +88,7 @@ namespace BdeBGTD
             {
                 Close();
             }
+           
         }
 
         private void ActionRapideCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -95,9 +101,10 @@ namespace BdeBGTD
         {
             unElement = maListe[elementCourant];
 
-            mesActions.Add(unElement);
-            unElement.Statut = "Action";
-            unElement.DateRappel = DateOnly.FromDateTime(DateTime.Now);
+            mesAutresElements.Add(unElement);
+            unElement.Statut = "Archive";
+            unElement.DateRappel = null;
+            //unElement.DateRappel = DateOnly.FromDateTime(DateTime.Now);
 
             maListe.Remove(unElement);
 
@@ -125,7 +132,7 @@ namespace BdeBGTD
             planification.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             planification.ShowDialog();
 
-            mesProchainesActions.Add(unElement);
+            mesAutresElements.Add(unElement);
 
             maListe.Remove(unElement);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GTD;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,12 @@ namespace BdeBGTD
     /// </summary>
     public partial class CalendrierSuivi : Window
     {
-        public CalendrierSuivi()
+        ElementGTD element;
+
+        public CalendrierSuivi(ElementGTD elem)
         {
             InitializeComponent();
+            element = elem;
         }
 
         private void AnnulerPlanif(object sender, CanExecuteRoutedEventArgs e)
@@ -31,6 +35,34 @@ namespace BdeBGTD
 
         private void AnnulerPlanif(object sender, ExecutedRoutedEventArgs e)
         {
+            Close();
+        }
+
+        /*private void Calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Calendar calendrier = sender as Calendar;
+
+            if (calendrier.SelectedDate.HasValue)
+            {
+                DateTime date = calendrier.SelectedDate.Value;
+                element.DateRappel = DateOnly.Parse(date.ToShortDateString());
+                element.Statut = "Suivi";
+            }
+
+            Close();
+        }*/
+
+        private void Calendar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Calendar calendrier = sender as Calendar;
+
+            if (calendrier.SelectedDate.HasValue)
+            {
+                DateTime date = calendrier.SelectedDate.Value;
+                element.DateRappel = DateOnly.Parse(date.ToShortDateString());
+                element.Statut = "Suivi";
+            }
+
             Close();
         }
     }

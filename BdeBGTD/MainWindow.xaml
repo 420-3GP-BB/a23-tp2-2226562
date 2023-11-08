@@ -127,9 +127,9 @@
                     <TextBlock Text="Prochaines actions" Grid.Column="1" Grid.Row="0" Style="{StaticResource StyleTitreBoites}"/>
                     <TextBlock Text="Système de suivi" Grid.Column="2" Grid.Row="0" Style="{StaticResource StyleTitreBoites}"/>
 
-                    <ListBox x:Name="BoiteEntrees" Grid.Row="1" Grid.Column="0" Style="{StaticResource StyleListBox}" IsEnabled="True"></ListBox>
-                    <ListBox x:Name="ProchainesActions" Grid.Row="1" Grid.Column="1" Style="{StaticResource StyleListBox}" ></ListBox>
-                    <ListBox x:Name="SystemeSuivi" Grid.Row="1" Grid.Column="2" Style="{StaticResource StyleListBox}" IsEnabled="True"></ListBox>
+                    <ListBox x:Name="BoiteEntrees" Grid.Row="1" Grid.Column="0" Style="{StaticResource StyleListBox}" IsEnabled="False"></ListBox>
+                    <ListBox x:Name="ProchainesActions" Grid.Row="1" Grid.Column="1" Style="{StaticResource StyleListBox}" MouseDoubleClick="ProchainesActions_MouseDoubleClick"></ListBox>
+                    <ListBox x:Name="SystemeSuivi" Grid.Row="1" Grid.Column="2" Style="{StaticResource StyleListBox}" IsEnabled="False"></ListBox>
                 </Grid>
 
             </Grid>
