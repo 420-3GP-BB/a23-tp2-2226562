@@ -4,10 +4,17 @@ namespace GTD
 {
     public class GestionnaireGTD
     {
+        // créer l'indice courant
         int _indiceCourant;
+
+        // créer les listes nécessaires
+        // liste d'entrées
         public ObservableCollection<ElementGTD> ListeEntrees { get; private set; }
+        // liste d'Actions
         public ObservableCollection<ElementGTD> ListeActions { get; private set; }
+        // liste des suivis
         public ObservableCollection<ElementGTD> ListeSuivis { get; private set; }
+        // liste des autres éléments (prochaines actions et les archives)
         public List<ElementGTD> AutresElements { get; private set; }
 
         public GestionnaireGTD()
@@ -16,16 +23,6 @@ namespace GTD
             ListeActions = new ObservableCollection<ElementGTD>();
             ListeSuivis = new ObservableCollection<ElementGTD>();
             AutresElements = new List<ElementGTD> { };
-        }
-
-        public void Ajouter(ElementGTD element)
-        {
-            ListeEntrees.Add(element);
-        }
-
-        public ElementGTD? ElementCourant
-        {
-            get => _indiceCourant >= 0 && _indiceCourant < ListeEntrees.Count ? ListeEntrees[_indiceCourant] : null;
         }
 
         public bool ProchainExiste

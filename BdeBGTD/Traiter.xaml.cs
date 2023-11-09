@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Shapes;
-using ClassesAffaire;
+//using ClassesAffaire;
 using System.Xml.Linq;
 
 namespace BdeBGTD
@@ -25,21 +25,24 @@ namespace BdeBGTD
     /// </summary>
     public partial class Traiter : Window
     {
+       // creer les commandes 
         public static RoutedCommand PoubelleCmd = new RoutedCommand();
         public static RoutedCommand IncuberCmd = new RoutedCommand();
         public static RoutedCommand PlanifierActionCmd = new RoutedCommand();
         public static RoutedCommand ActionRapideCmd = new RoutedCommand();
         public static RoutedCommand Retour = new RoutedCommand();
+
+        // creer les listes
         ObservableCollection<ElementGTD> maListe;
         ObservableCollection<ElementGTD> mesActions;
         ObservableCollection<ElementGTD> mesSuivis;
         List<ElementGTD> mesAutresElements;
+        // creer l'element 
         ElementGTD unElement;
         int elementCourant = 0;
+        // creer le gestionnaire
         GestionnaireGTD unGestionnaire;
-        //List<ElementGTD> laPoubelle = new List<ElementGTD>();
-        //ElementGTD unElement;
-        //private List<TextBox> _lesTextBox;
+       
 
 
         public Traiter(GestionnaireGTD _gestionnaire)
@@ -47,13 +50,14 @@ namespace BdeBGTD
             unElement = new ElementGTD();
             
             InitializeComponent();
-
+            // associer les listes et le gestionnaire
             unGestionnaire = _gestionnaire;
             maListe = unGestionnaire.ListeEntrees;
             mesActions = unGestionnaire.ListeActions;
             mesSuivis = unGestionnaire.ListeSuivis;
             mesAutresElements = unGestionnaire.AutresElements;
 
+            // faire le datacontext pour la l'élément courant de la liste d'entrées
             DataContext = unGestionnaire.ListeEntrees[elementCourant];
 
           
@@ -61,6 +65,7 @@ namespace BdeBGTD
             
         }
 
+        // can execute et executed pour incuber
         private void IncuberCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -91,6 +96,7 @@ namespace BdeBGTD
            
         }
 
+        // can execute et executed pour action rapide
         private void ActionRapideCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
 
@@ -104,7 +110,6 @@ namespace BdeBGTD
             mesAutresElements.Add(unElement);
             unElement.Statut = "Archive";
             unElement.DateRappel = null;
-            //unElement.DateRappel = DateOnly.FromDateTime(DateTime.Now);
 
             maListe.Remove(unElement);
 
@@ -118,6 +123,8 @@ namespace BdeBGTD
             }
         }
 
+
+        // can execute et executed pour planifier action
         private void PlanifierActionCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute= true;
@@ -132,7 +139,15 @@ namespace BdeBGTD
             planification.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             planification.ShowDialog();
 
-            mesAutresElements.Add(unElement);
+            if(unElement.DateRappel == DateOnly.FromDateTime(DateTime.Now))
+            {
+                mesActions.Add(unElement);
+            }
+            else
+            {
+                mesAutresElements.Add(unElement);
+            }
+            
 
             maListe.Remove(unElement);
 
@@ -147,6 +162,8 @@ namespace BdeBGTD
             }
         }
 
+
+        // can execute et executed pour la poubelle
         private void PoubelleCmd_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -168,9 +185,10 @@ namespace BdeBGTD
             
         }
 
-        
 
 
+
+        // can execute et executed pour retour
         private void Retour_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;

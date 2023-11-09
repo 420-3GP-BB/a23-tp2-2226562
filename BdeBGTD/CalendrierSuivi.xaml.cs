@@ -20,6 +20,9 @@ namespace BdeBGTD
     /// </summary>
     public partial class CalendrierSuivi : Window
     {
+        // Faire les memes instructions qu'on a fait avec CalendrierPlanif 
+
+
         ElementGTD element;
 
         public CalendrierSuivi(ElementGTD elem)
@@ -38,19 +41,6 @@ namespace BdeBGTD
             Close();
         }
 
-        /*private void Calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Calendar calendrier = sender as Calendar;
-
-            if (calendrier.SelectedDate.HasValue)
-            {
-                DateTime date = calendrier.SelectedDate.Value;
-                element.DateRappel = DateOnly.Parse(date.ToShortDateString());
-                element.Statut = "Suivi";
-            }
-
-            Close();
-        }*/
 
         private void Calendar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -60,6 +50,7 @@ namespace BdeBGTD
             {
                 DateTime date = calendrier.SelectedDate.Value;
                 element.DateRappel = DateOnly.Parse(date.ToShortDateString());
+                // on modifie le statut de l'élément comme étant Suivi
                 element.Statut = "Suivi";
             }
 

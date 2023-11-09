@@ -57,6 +57,7 @@ namespace BdeBGTD
 
         private void poursuivre_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            DataContext = unElement;
             Close();
         }
     }

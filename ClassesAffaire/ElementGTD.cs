@@ -1,46 +1,28 @@
-﻿using ClassesAffaire;
-using System.Xml;
+﻿using System.Xml;
 
 namespace GTD
 {
     public class ElementGTD
     {
+        // Créer les attributs de l'éléments qui sont : 
+        // le nom comme une chaine de caractere
         public string Nom { get; set; }
+        // la description
         public string Description { get; set; }
+        // la date rappel
         public DateOnly? DateRappel { get; set; }
+        // et son statut
         public string Statut { get; set; }
 
-        /*
-
-        public ElementGTD(string nom, string statut, string description, string dateRappel) 
-        { 
-            Nom = nom;
-            Statut = statut;
-            Description = description;
-            DateRappel = dateRappel;
-            
-        }
-
-        public ElementGTD(string nom, string statut)
-        {
-            Nom = nom;
-            Statut = statut;
-        }
-
-        public ElementGTD(string nom, string statut, string description)
-        {
-            Nom = nom;
-            Statut = statut;
-            Description = description;
-        }
-
-        */
+       
+        
         public ElementGTD(XmlElement element)
         {
             Nom = element.GetAttribute("nom");
             Description = element.InnerText;
             Statut = element.GetAttribute("statut");
 
+            // si la date rappel n'est pas vide dans le fichier, on la divise en 3 : annee, mois et jour
             if(element.GetAttribute("dateRappel") != "")
             {
                 string[] laDate = element.GetAttribute("dateRappel").Split("-");
@@ -56,6 +38,7 @@ namespace GTD
             
         }
 
+        // lorsqu'on crée un élément on met son statut automatiquement a entrée
         public ElementGTD() 
         {
             Statut = "Entree";
@@ -63,7 +46,7 @@ namespace GTD
 
         
 
-
+        // méthode pour prendre l'élément et le mettre dans le XML
         public XmlElement VersXML(XmlDocument doc)
         {
             XmlElement element = doc.CreateElement("element_gtd");
@@ -76,6 +59,7 @@ namespace GTD
 
         }
 
+        // méthode ToString
         public override string ToString()
         {
             if(Statut == "Suivi")
